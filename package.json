@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "node test/index"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ceicc/subreddit-wiki-scrapper.git"
+  },
   "keywords": [
     "archive",
     "reddit",
@@ -15,6 +19,11 @@
   ],
   "author": "Husam Ahmed",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ceicc/subreddit-wiki-scrapper/issues",
+    "email": "husam999h@gmail.com"
+  },
+  "homepage": "https://github.com/ceicc/subreddit-wiki-scrapper#readme",
   "dependencies": {
     "puppeteer-core": "^13.0.1"
   }
