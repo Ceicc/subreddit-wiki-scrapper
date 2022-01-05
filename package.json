@@ -1,0 +1,21 @@
+{
+  "name": "subreddit-wiki-scrapper",
+  "version": "0.0.1",
+  "description": "Download any subreddit's wiki and archive it.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node test/index"
+  },
+  "keywords": [
+    "archive",
+    "reddit",
+    "wiki",
+    "scrape",
+    "scrapper"
+  ],
+  "author": "Husam Ahmed",
+  "license": "MIT",
+  "dependencies": {
+    "puppeteer-core": "^13.0.1"
+  }
+}
