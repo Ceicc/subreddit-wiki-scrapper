@@ -1,6 +1,6 @@
 {
   "name": "subreddit-wiki-scrapper",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Download any subreddit's wiki and archive it.",
   "main": "index.js",
   "scripts": {
