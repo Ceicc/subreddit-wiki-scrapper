@@ -9,6 +9,7 @@ puppeteer = require("puppeteer-core")
  * @property {string} chromiumPath the path for a chromium browser to run in it - required
  * @property {boolean} [headless] whether to run chromium in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome) or not - default true
  * @property {boolean} [silent] operate in silent mode, there will be no logs in the terminal - default true
+ * @property {number} [timeout] page loading timeout in ms - default 30000 (30s)
  */
 
 /**
@@ -33,14 +34,14 @@ async function subredditWikiScrapper(subreddit, outDir, opts = {}) {
 
 
   const page = await browser.newPage()
-  // page.setDefaultTimeout(120000)
+  typeof opts.timeout === "number" && page.setDefaultTimeout(opts.timeout)
   page.setRequestInterception(true)
   page.on("request", req => {
     req.resourceType() === "document" ? req.continue() : req.abort()
   })
 
   opts.silent === false && console.log("Downloading index")
-  
+
   await page.goto(`https://www.reddit.com/r/${subreddit}/wiki/index`)
 
   const wikiError = await page.waitForSelector(".md.wiki").then(() => 0).catch(err => err)
@@ -60,7 +61,7 @@ async function subredditWikiScrapper(subreddit, outDir, opts = {}) {
   links = links.filter(link => link.indexOf(`/r/${subreddit}/wiki/`) !== -1).map(link => link.substring(9 + subreddit.length))
 
   await fs.writeFile(`${outDir}/index.html`, wiki).then(() => doneScraping.add("index"))
-  
+
   wiki = null
   await page.close()
 
@@ -87,33 +88,33 @@ async function subredditWikiScrapper(subreddit, outDir, opts = {}) {
  */
 
 async function recursiveScrape(outDir, browser, subreddit, link, doneScraping, opts) {
-  
+
   if (doneScraping.has(link)) return
 
   opts.silent === false && console.log("Downloading %s", link)
 
   const page = await browser.newPage()
 
-  // page.setDefaultTimeout(120000)
+  typeof opts.timeout === "number" && page.setDefaultTimeout(opts.timeout)
   page.setRequestInterception(true)
   page.on("request", req => {
     req.resourceType() === "document" ? req.continue() : req.abort()
   })
 
   await page.goto(`https://www.reddit.com/r/${subreddit}/wiki/${link}`)
-  
+
   const wikiError = await page.waitForSelector(".md.wiki").then(() => 0).catch(err => err)
 
   if (wikiError !== 0) {
     opts.silent === false && console.log("Failed Downloading %s\n\n%O\n", link, wikiError)
     return
   }
-  
+
   let [wiki, links] = await page.evaluate(() => [
     document.querySelector(".md.wiki").innerHTML,
     Array.from(document.querySelector(".md.wiki").querySelectorAll("a")).map(a => a.pathname.toLowerCase())
   ])
-  
+
   links = links.filter(link => link.indexOf(`/r/${subreddit}/wiki/`) !== -1).map(link => link.substring(9 + subreddit.length))
 
 
