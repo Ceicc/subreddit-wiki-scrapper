@@ -32,4 +32,4 @@ This will download the wiki in the `piracy-wiki` directory
    - `chromiumPath` - the path for a chromium browser to run in it - required
    - `headless` - whether to run chromium in [headless mode](https://developers.google.com/web/updates/2017/04/headless-chrome) or not - default true
    - `silent` - operate in silent mode, there will be no logs in the terminal - default true
-
+   - `timeout` - page loading timeout in ms - default 30000 (30s)
